@@ -4,3 +4,4 @@ DATABASE_PASSWORD='your database password'
 DATABASE_HOST='your database host'
 DATABASE_PORT=5432
 SECRET_KEY='your secret key'
+DEBUG=True // Make this false while in production
