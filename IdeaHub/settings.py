@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from os.path import join, dirname
 import dotenv
-from .user.apps import UserConfig
 
 dotenv_path = join(dirname(__file__), '../.env')
 dotenv.read_dotenv(dotenv_path)
@@ -39,7 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'IdeaHub.user.apps.UserConfig',
+    'IdeaHub.Apps.user.apps.UserConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
