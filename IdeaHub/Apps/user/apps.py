@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class UserConfig(AppConfig):
-    name = 'IdeaHub.Apps.user'
+    name = 'IdeaHub.Apps.User'
