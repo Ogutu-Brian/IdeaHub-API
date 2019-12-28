@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'rest_framework.authtoken',
-    'IdeaHub.Apps.User.apps.UserConfig',
+    'IdeaHub.Apps.Profile.apps.ProfileConfig',
 ]
 
 REST_FRAMEWORK = {
@@ -60,6 +60,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES':('JWT',),
 }
 
 MIDDLEWARE = [
