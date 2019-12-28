@@ -16,12 +16,14 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-router = routers.DefaultRouter()
-router.register('users', UserViewSet)
+# router = routers.DefaultRouter()
+# router.register('users', UserViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # path('', include(router.urls)),
     path('admin', admin.site.urls),
-    path('example_users/', include('IdeaHub.Apps.User.urls'))
+    path('example_users/', include('IdeaHub.Apps.User.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken'))
 ]
