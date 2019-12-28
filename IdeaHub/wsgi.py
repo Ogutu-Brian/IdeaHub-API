@@ -1,5 +1,5 @@
 """
-WSGI config for API project.
+WSGI config for IdeaHub project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -13,6 +13,6 @@ from django.core.wsgi import get_wsgi_application
 
 dotenv.read_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'API.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'IdeaHub.settings')
 
 application = get_wsgi_application()
