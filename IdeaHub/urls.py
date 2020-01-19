@@ -8,7 +8,7 @@ from rest_framework import routers, serializers, viewsets
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'is_staff']
+        fields = ['url', 'username', 'email']
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -22,9 +22,6 @@ router.register('users', UserViewSet)
 
 urlpatterns = [
     path('admin', admin.site.urls),
-    path('example_users/', include('IdeaHub.Apps.Profile.urls')),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
-      path('auth/', include('djoser.urls.jwt')),
     path('', include(router.urls)),
+    path('example_users/', include('IdeaHub.Apps.Profile.urls')),
 ]
