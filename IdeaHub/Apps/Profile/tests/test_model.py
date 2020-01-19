@@ -23,5 +23,5 @@ class ProfileModelTests(TestCase):
     def test_password_hashed(self):
         profile = Profile.objects.get(
             user__username=ProfileModelTests.USERNAME)
-        
-        self.assertNotEqual(profile.user.password,ProfileModelTests.PASSWORD)
+
+        self.assertNotEqual(profile.user.password, ProfileModelTests.PASSWORD)
