@@ -2,7 +2,6 @@ from django.test import TestCase
 from IdeaHub.Apps.Profile.models import Profile
 from django.contrib.auth.models import User
 
-
 class ProfileModelTests(TestCase):
     USERNAME = 'test user'
     EMAIL = 'test email'
@@ -16,7 +15,7 @@ class ProfileModelTests(TestCase):
         )
         Profile.objects.create(user=user)
 
-    def test_profile_bound_to_user(self):
+    def test_profile_bound_to_user(self)->None:
         profile = Profile.objects.get(
             user__username=ProfileModelTests.USERNAME
         )
