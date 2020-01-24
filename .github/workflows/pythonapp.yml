@@ -9,6 +9,7 @@ jobs:
 
     steps:
     - name: Environment variables
+      run: echo Setting up environment variables
       env: 
         DATABASE_NAME: ideahub
         USER_NAME: ideahub
