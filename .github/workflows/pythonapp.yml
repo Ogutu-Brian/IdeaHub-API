@@ -8,6 +8,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Environment variables
+      env: 
+        DATABASE_NAME: ideahub
+        USER_NAME: ideahub
+        DATABASE_PASSWORD: ideahub
+        DATABASE_HOST: localhost
+        DATABASE_PORT: 5432
+        SECRET_KEY: example secret key
+        DEBUG: True
     - uses: actions/checkout@v1
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
