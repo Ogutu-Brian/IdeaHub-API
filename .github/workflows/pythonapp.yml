@@ -35,4 +35,4 @@ jobs:
         DEBUG: True
       run: |
         pip install pytest
-        python manage.py test
+        coverage run manage.py test
