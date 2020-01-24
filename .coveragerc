@@ -2,4 +2,9 @@
 omit =
     */site-packages/*
     */distutils/*
-    tests/*
+    */tests/*
+    */migrations/*
+    */admin.py
+    manage.py
+    IdeaHub/settings.py
+    
