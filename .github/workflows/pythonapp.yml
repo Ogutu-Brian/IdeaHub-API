@@ -37,4 +37,3 @@ jobs:
         pip install pytest
         coverage run manage.py test
         coverage report
-
