@@ -15,7 +15,7 @@ class ProfileModelTests(TestCase):
         )
         Profile.objects.create(user=user)
 
-    def test_profile_bound_to_user(self)->None:
+    def test_profile_bound_to_user(self):
         profile = Profile.objects.get(
             user__username=ProfileModelTests.USERNAME
         )
