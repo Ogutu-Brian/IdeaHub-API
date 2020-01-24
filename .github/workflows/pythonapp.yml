@@ -35,6 +35,14 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
+      env: 
+        DATABASE_NAME: ideahub
+        USER_NAME: ideahub
+        DATABASE_PASSWORD: ideahub
+        DATABASE_HOST: localhost
+        DATABASE_PORT: 5432
+        SECRET_KEY: example secret key
+        DEBUG: True
       run: |
         pip install pytest
         python manage.py test
