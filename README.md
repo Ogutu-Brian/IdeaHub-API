@@ -8,12 +8,13 @@
 * There are platforms like SharkTank and other places where these people meet toshare the ideas and resources in order to build something great. However, manypeople in the world cannot afford to go to shark tank either.Conclusion: ​~This is the problem our product solves
 
 # Setting up the project
-* Create a virtual environment and activate it
-* $ cd IdeaHub-API/
-* $ pip install -r requirements.txt
+* Clone the repo : `git clone https://github.com/Ogutu-Brian/IdeaHub-API.git`
+* Navigate to the cloned folder `$ cd IdeaHub-API/`
+* Run `$ pipenv shell` . This will create a virtual environment and pipfile   for package requirements.
 * $ touch .env
 * copy content of example_env.txt to .env and update the values to your own configs
-* python manage.py runserver
+* Run migrations `python manage.py migrate`
+* Start the server `python manage.py runserver`
 
 
 # Running Unit Tests
