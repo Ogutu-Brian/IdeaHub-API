@@ -9,15 +9,15 @@
 
 # Requirements
 * python 3
-* pipenv 
-  If you're on MacOS, you can install Pipenv easily with Homebrew:
-    `$ brew install pipenv`
-  Or, if you're using Debian Buster+:
-    `$ sudo apt install pipenv`
-  Or, if you're using Fedora:
-    `$ sudo dnf install pipenv`
-  Or, if you're using FreeBSD:
-    `pkg install py36-pipenv`
+* pipenv
+  - If you're on MacOS, you can install Pipenv easily with Homebrew:
+      `$ brew install pipenv`
+  - Debian Buster+:
+      `$ sudo apt install pipenv`
+  - Fedora:
+      `$ sudo dnf install pipenv`
+  - FreeBSD:
+      `$ pkg install py36-pipenv`
 
 # Setting up the project
 * Clone the repo : `git clone https://github.com/Ogutu-Brian/IdeaHub-API.git`
