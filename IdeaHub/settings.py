@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'IdeaHub.apps.profile.apps.ProfileConfig',
+    'IdeaHub.apps.authentication.apps.AuthenticationConfig',
 ]
 
 REST_FRAMEWORK = {
