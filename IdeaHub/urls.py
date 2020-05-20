@@ -23,5 +23,5 @@ router.register('users', UserViewSet)
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', include(router.urls)),
-    path('example_users/', include('IdeaHub.Apps.Profile.urls')),
+    path('profile/', include('IdeaHub.Apps.Profile.urls')),
 ]
