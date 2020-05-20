@@ -8,6 +8,10 @@ from django.contrib.auth.models import User
 class TestUserLogIn(TestCase):
     client = APIClient()
 
+    def tearDown(self):
+        users = User.objects.all()
+        [user.delete() for user in users]
+
     def sign_up(self):
         response = self.client.post(
             SIGN_UP_ENDPOINT,
@@ -48,6 +52,20 @@ class TestUserLogIn(TestCase):
         self.assertEqual(
             response.data,
             SignUpData.ResponseData.ivalid_email_error,
+        )
+
+    def test_signup_more_than_once(self):
+        self.sign_up()
+        response = self.sign_up()
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+
+        self.assertEqual(
+            response.data,
+            SignUpData.ResponseData.user_exist_error
         )
 
     def test_successful_sign_up(self):

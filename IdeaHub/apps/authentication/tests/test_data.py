@@ -51,7 +51,7 @@ class SignUpData:
             ]
         }
 
-        user_exist_message = {
+        user_exist_error = {
             "user": [
                 "a user with this email address exist."
             ]
