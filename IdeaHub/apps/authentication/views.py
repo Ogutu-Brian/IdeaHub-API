@@ -8,14 +8,4 @@ from .serializers.signup_serializer import SignUpSerializer
 def sign_up(request):
     data = request.data
     serializer = SignUpSerializer(data=data)
-    response = None
-
-    if(serializer.is_valid()):
-        pass
-    else:
-        response = Response(
-            serializer.errors,
-            status=status.HTTP_406_NOT_ACCEPTABLE
-        )
-
-    return response
+    serializer.is_valid(raise_exception=True)

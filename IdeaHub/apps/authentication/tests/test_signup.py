@@ -16,7 +16,7 @@ class TestUserLogIn(TestCase):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_406_NOT_ACCEPTABLE
+            status.HTTP_400_BAD_REQUEST
         )
 
         self.assertEqual(
@@ -33,7 +33,7 @@ class TestUserLogIn(TestCase):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_406_NOT_ACCEPTABLE
+            status.HTTP_400_BAD_REQUEST
         )
 
         self.assertEqual(
