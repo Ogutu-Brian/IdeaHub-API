@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 from ..routing import get_app_routes, APP_INITIAL
 
 
