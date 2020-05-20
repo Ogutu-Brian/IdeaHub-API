@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'IdeaHub.Apps.Profile.apps.ProfileConfig',
+    'IdeaHub.apps.profile.apps.ProfileConfig',
 ]
 
 REST_FRAMEWORK = {

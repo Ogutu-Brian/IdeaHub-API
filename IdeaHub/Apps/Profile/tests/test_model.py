@@ -1,6 +1,7 @@
 from django.test import TestCase
-from IdeaHub.Apps.Profile.models import Profile
+from IdeaHub.apps.profile.models import Profile
 from django.contrib.auth.models import User
+
 
 class ProfileModelTests(TestCase):
     USERNAME = 'test user'

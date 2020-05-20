@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ProfileConfig(AppConfig):
-    name = 'IdeaHub.Apps.Profile'
+    name = 'IdeaHub.apps.profile'
