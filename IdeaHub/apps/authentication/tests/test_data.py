@@ -44,3 +44,15 @@ class SignUpData:
                 "Enter a valid email address."
             ]
         }
+
+        success_response = {
+            "message": [
+                "a verification code has been sent to your email."
+            ]
+        }
+
+        user_exist_message = {
+            "user": [
+                "a user with this email address exist."
+            ]
+        }

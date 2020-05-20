@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class ProfileModelTests(TestCase):
     USERNAME = 'test user'
-    EMAIL = 'test email'
+    EMAIL = 'testemail@gmail.com'
     PASSWORD = 'test password'
 
     def setUp(self):

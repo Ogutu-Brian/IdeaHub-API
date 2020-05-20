@@ -14,7 +14,8 @@ def sign_up(request):
 
     try:
         User.objects.get(email=data.get('email'))
-        user_exist_message = 'a user with this email address exist'
+        user_exist_message = 'a user with this email address exist.'
+
         return Response({
             'user': [user_exist_message]
         }, status=status.HTTP_400_BAD_REQUEST)
@@ -27,8 +28,8 @@ def sign_up(request):
             username=data.get('email'),
             is_active=False
         )
+        success_message = 'a verification code has been sent to your email.'
 
-        success_message = 'a verification code has been sent to your email'
         return Response({
-            'message': success_message
+            'message': [success_message]
         }, status=status.HTTP_201_CREATED)
