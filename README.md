@@ -1,5 +1,6 @@
 # IdeaHub-API
 [![Build Status](https://travis-ci.org/Ogutu-Brian/IdeaHub-API.svg?branch=develop)](https://travis-ci.org/Ogutu-Brian/IdeaHub-API)
+[![Coverage Status](https://coveralls.io/repos/github/Ogutu-Brian/IdeaHub-API/badge.svg?branch=develop)](https://coveralls.io/github/Ogutu-Brian/IdeaHub-API?branch=develop)
 
 ### PROBLEM
 * There are lots of people with ideas, brilliant minds, spread across all over the world.However, most of these people don’t have the resources necessary to make theseideas a success.
