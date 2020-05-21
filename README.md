@@ -1,5 +1,5 @@
 # IdeaHub-API
-![](https://github.com/Ogutu-Brian/IdeaHub-API/workflows/Tests/badge.svg)
+[![Build Status](https://travis-ci.org/Ogutu-Brian/IdeaHub-API.svg?branch=develop)](https://travis-ci.org/Ogutu-Brian/IdeaHub-API)
 
 ### PROBLEM
 * There are lots of people with ideas, brilliant minds, spread across all over the world.However, most of these people don’t have the resources necessary to make theseideas a success.
