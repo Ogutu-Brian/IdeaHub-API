@@ -35,6 +35,12 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = []
 
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 
 # Application definition
 
@@ -47,7 +53,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'IdeaHub.Apps.Profile.apps.ProfileConfig',
+    'IdeaHub.apps.profile.apps.ProfileConfig',
+    'IdeaHub.apps.authentication.apps.AuthenticationConfig',
 ]
 
 REST_FRAMEWORK = {
@@ -59,9 +66,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    'DEFAULT_PERMISSION_CLASSES': []
 }
 
 SIMPLE_JWT = {

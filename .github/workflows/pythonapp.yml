@@ -33,6 +33,12 @@ jobs:
         DATABASE_PORT: 5432
         SECRET_KEY: example secret key
         DEBUG: True
+        SENDGRID_API_KEY: test key
+        EMAIL_HOST_USER: test user
+        EMAIL_HOST: test host
+        EMAIL_PASSWORD: test password
+        EMAIL_PORT: test port
+        EMAIL_USE_TLS: True
       run: |
         pip install pytest
         coverage run manage.py test

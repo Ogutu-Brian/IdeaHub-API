@@ -1,6 +1,7 @@
 # IdeaHub-API
-![](https://github.com/Ogutu-Brian/IdeaHub-API/workflows/Tests/badge.svg)
-
+[![Build Status](https://travis-ci.org/Ogutu-Brian/IdeaHub-API.svg?branch=develop)](https://travis-ci.org/Ogutu-Brian/IdeaHub-API)
+[![Coverage Status](https://coveralls.io/repos/github/Ogutu-Brian/IdeaHub-API/badge.svg?branch=develop)](https://coveralls.io/github/Ogutu-Brian/IdeaHub-API?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/89bcc1f9e85dbe1e1fbd/maintainability)](https://codeclimate.com/github/Ogutu-Brian/IdeaHub-API/maintainability)
 ### PROBLEM
 * There are lots of people with ideas, brilliant minds, spread across all over the world.However, most of these people don’t have the resources necessary to make theseideas a success.
 * There are lots of people in the world with skills in the world but they do not have anidea of what to build or where to use their skills.
