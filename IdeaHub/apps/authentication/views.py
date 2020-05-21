@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import vcode
 from ..profile.models import VerificationCode
+from django.core.mail import send_mail
 
 
 @api_view(['POST'])
@@ -32,19 +33,35 @@ def sign_up(request):
         else:
             code = vcode.digits()
             success_message = 'a verification code has been sent to your email.'
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            password = data.get('password')
+            username = data.get('email')
+            email_subject = 'IdeaHub Verification Code'
+            email_message = 'Your verification code is {}'.format(code)
+            ideahub_email = 'noreply@ideahub.com'
 
             user = User.objects.create_user(
-                first_name=data.get('first_name'),
-                last_name=data.get('last_name'),
-                email=data.get('email'),
-                password=data.get('password'),
-                username=data.get('email'),
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                username=email,
                 is_active=False
             )
 
             VerificationCode.objects.create(
                 code=str(code),
                 user=user
+            )
+
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=ideahub_email,
+                recipient_list=[email],
+                fail_silently=False
             )
 
             response = Response({
