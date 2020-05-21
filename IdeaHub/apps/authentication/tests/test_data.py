@@ -32,6 +32,14 @@ class SignUpData:
             "confirm_password": confirm_password
         }
 
+        mismatching_password_data = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "password": password,
+            "confirm_password": 'another password'
+        }
+
     class ResponseData:
         incomplete_details_error = {
             "first_name": [
@@ -54,5 +62,11 @@ class SignUpData:
         user_exist_error = {
             "user": [
                 "a user with this email address exist."
+            ]
+        }
+
+        mismatching_password_error = {
+            "password": [
+                "the passwords do not match"
             ]
         }
