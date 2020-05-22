@@ -6,12 +6,8 @@ from django.contrib.auth.models import User
 from ...profile.models import VerificationCode
 
 
-class TestUserLogIn(TestCase):
+class BaseTest(TestCase):
     client = APIClient()
-
-    def tearDown(self):
-        users = User.objects.all()
-        [user.delete() for user in users]
 
     def sign_up(self):
         response = self.client.post(
@@ -21,6 +17,12 @@ class TestUserLogIn(TestCase):
         )
 
         return response
+
+
+class TestUserSignUp(BaseTest):
+    def tearDown(self):
+        users = User.objects.all()
+        [user.delete() for user in users]
 
     def test_missing_field(self):
         response = self.client.post(
@@ -109,3 +111,8 @@ class TestUserLogIn(TestCase):
 
         self.assertEqual(len(verification_codes), 1)
         self.assertEqual(verification_codes[0].code, code.code)
+
+
+class VerifyUserTest(TestCase):
+    def setUp(self):
+        pass
