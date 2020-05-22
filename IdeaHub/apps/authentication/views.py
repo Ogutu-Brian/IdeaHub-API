@@ -8,7 +8,10 @@ from .serializers.serializer import(
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import vcode
-from ..profile.models import VerificationCode
+from ..profile.models import(
+    VerificationCode,
+    Profile
+)
 from django.core.mail import send_mail
 
 
@@ -99,6 +102,7 @@ def verify_user(request):
             user = verification_code.user
             user.is_active = True
             user.save()
+            Profile.objects.create(user=user)
 
             response = Response({
                 'message': [response_message]

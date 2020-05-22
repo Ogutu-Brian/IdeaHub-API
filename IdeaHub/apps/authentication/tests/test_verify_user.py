@@ -7,6 +7,7 @@ from .test_data import (
 )
 from .base_test import BaseTest
 from django.contrib.auth.models import User
+from ...profile.models import Profile
 
 
 class VerifyUserTest(BaseTest):
@@ -123,3 +124,10 @@ class VerifyUserTest(BaseTest):
             response.data,
             self.response_data.verify_user_response
         )
+
+    def test_creating_user_profile(self):
+        self.post_verification_code()
+
+        profile = Profile.objects.get(user__email=email)
+
+        self.assertEqual(profile.user.email, email)
