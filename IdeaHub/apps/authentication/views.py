@@ -1,11 +1,17 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers.signup_serializer import SignUpSerializer
+from .serializers.serializer import(
+    SignUpSerializer,
+    VerifyUserSerializer
+)
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import vcode
-from ..profile.models import VerificationCode
+from ..profile.models import(
+    VerificationCode,
+    Profile
+)
 from django.core.mail import send_mail
 
 
@@ -67,5 +73,45 @@ def sign_up(request):
             response = Response({
                 'message': [success_message]
             }, status=status.HTTP_201_CREATED)
+
+    return response
+
+
+@api_view(['POST'])
+def verify_user(request):
+    response = None
+    data = request.data
+    serializer = VerifyUserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        email = data.get('email')
+        code = data.get('verification_code')
+        verification_code = VerificationCode.objects.get(
+            user__email=email
+        )
+
+        if(verification_code.code != code):
+            response_message = 'The verification code does not match.'
+
+            response = Response({
+                'verification_code': [response_message]
+            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response_message = 'User account has successfully been activated.'
+            user = verification_code.user
+            user.is_active = True
+            user.save()
+            Profile.objects.create(user=user)
+
+            response = Response({
+                'message': [response_message]
+            }, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist:
+        response_message = 'A user with this email address does not exist.'
+
+        response = Response({
+            'user': [response_message]
+        }, status=status.HTTP_401_UNAUTHORIZED)
 
     return response

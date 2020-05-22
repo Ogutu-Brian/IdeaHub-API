@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'IdeaHub.apps.profile.apps.ProfileConfig',
     'IdeaHub.apps.authentication.apps.AuthenticationConfig',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -81,9 +82,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 ]
 
 ROOT_URLCONF = 'IdeaHub.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ORIGIN_WHITELIST = (
+#     'http//:localhost:3000',
+# )
 
 TEMPLATES = [
     {

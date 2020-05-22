@@ -17,18 +17,32 @@ class ProfileModelTests(TestCase):
         )
         Profile.objects.create(user=user)
 
-    def test_profile_bound_to_user(self):
+    def get_profile(self):
         profile = Profile.objects.get(
             user__username=USERNAME
         )
+
+        return profile
+
+    def test_profile_bound_to_user(self):
+        profile = self.get_profile()
+
         self.assertEqual(profile.user.username, USERNAME)
         self.assertEqual(profile.user.email, EMAIL)
 
     def test_password_hashed(self):
-        profile = Profile.objects.get(
-            user__username=USERNAME
-        )
+        profile = self.get_profile()
+
         self.assertNotEqual(profile.user.password, PASSWORD)
+
+    def test_model_representation(self):
+        profile = self.get_profile()
+        representation_string = '{} {}'.format(
+            profile.user.first_name,
+            profile.user.last_name
+        )
+
+        self.assertEqual(profile.__str__(), representation_string)
 
 
 class VerificationCodeModel(TestCase):
@@ -44,7 +58,18 @@ class VerificationCodeModel(TestCase):
             user=user
         )
 
-    def test_code_bound_to_user(self):
+    def get_verification_code(self):
         code = VerificationCode.objects.get(user__email=EMAIL)
+
+        return code
+
+    def test_code_bound_to_user(self):
+        code = self.get_verification_code()
+
         self.assertEqual(code.user.username, USERNAME)
         self.assertEqual(code.code, VERIFICATION_CODE)
+
+    def test_model_representation(self):
+        code = self.get_verification_code()
+
+        self.assertEqual(code.__str__(), code.code)
