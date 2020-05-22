@@ -91,3 +91,9 @@ class SignUpData:
                 'A user with this email address does not exist.'
             ]
         }
+
+        verify_user_response = {
+            'message': [
+                'User account has successfully been activated.'
+            ]
+        }

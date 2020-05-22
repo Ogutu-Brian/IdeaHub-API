@@ -1,7 +1,11 @@
-from .test_data import SIGN_UP_ENDPOINT
+from .test_data import (
+    SIGN_UP_ENDPOINT,
+    email
+)
 from rest_framework import status
 from ...profile.models import VerificationCode
 from .base_test import BaseTest
+from django.contrib.auth.models import User
 
 
 class TestUserSignUp(BaseTest):
@@ -94,3 +98,9 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(len(verification_codes), 1)
         self.assertEqual(verification_codes[0].code, code.code)
+
+    def test_successful_saving_user(self):
+        self.sign_up()
+        user = User.objects.get(email=email)
+
+        self.assertEqual(user.is_active, False)

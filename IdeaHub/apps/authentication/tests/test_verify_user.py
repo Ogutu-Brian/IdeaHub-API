@@ -6,6 +6,7 @@ from .test_data import (
     invalid_code
 )
 from .base_test import BaseTest
+from django.contrib.auth.models import User
 
 
 class VerifyUserTest(BaseTest):
@@ -105,4 +106,20 @@ class VerifyUserTest(BaseTest):
         self.assertEqual(
             response.data,
             self.response_data.mismatching_verification_code_error
+        )
+
+    def test_activating_user(self):
+        response = self.post_verification_code()
+        user = User.objects.get(email=email)
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+
+        self.assertEqual(user.is_active, True)
+
+        self.assertEqual(
+            response.data,
+            self.response_data.verify_user_response
         )

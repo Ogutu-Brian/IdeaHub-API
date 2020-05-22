@@ -89,18 +89,25 @@ def verify_user(request):
         )
 
         if(verification_code.code != code):
+            response_message = 'The verification code does not match.'
+
             response = Response({
-                'verification_code': [
-                    'The verification code does not match.'
-                ]
+                'verification_code': [response_message]
             }, status=status.HTTP_400_BAD_REQUEST)
         else:
-            pass
+            response_message = 'User account has successfully been activated.'
+            user = verification_code.user
+            user.is_active = True
+            user.save()
+
+            response = Response({
+                'message': [response_message]
+            }, status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
+        response_message = 'A user with this email address does not exist.'
+
         response = Response({
-            'user': [
-                'A user with this email address does not exist.'
-            ]
+            'user': [response_message]
         }, status=status.HTTP_401_UNAUTHORIZED)
 
     return response
