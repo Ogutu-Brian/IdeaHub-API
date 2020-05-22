@@ -7,7 +7,10 @@ from .test_data import (
 )
 from .base_test import BaseTest
 from django.contrib.auth.models import User
-from ...profile.models import Profile
+from ...profile.models import (
+    Profile,
+    VerificationCode
+)
 
 
 class VerifyUserTest(BaseTest):
@@ -131,3 +134,9 @@ class VerifyUserTest(BaseTest):
         profile = Profile.objects.get(user__email=email)
 
         self.assertEqual(profile.user.email, email)
+
+    def test_delete_verification_code(self):
+        self.post_verification_code()
+        verification_codes = VerificationCode.objects.all()
+
+        self.assertEqual(len(verification_codes), 0)

@@ -103,6 +103,10 @@ def verify_user(request):
             user.is_active = True
             user.save()
             Profile.objects.create(user=user)
+            verification_code = VerificationCode.objects.get(
+                user__email=user.email
+            )
+            verification_code.delete()
 
             response = Response({
                 'message': [response_message]
