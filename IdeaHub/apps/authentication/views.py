@@ -69,3 +69,7 @@ def sign_up(request):
             }, status=status.HTTP_201_CREATED)
 
     return response
+
+
+# @api_view(['POST'])
+# def verify_user(self):

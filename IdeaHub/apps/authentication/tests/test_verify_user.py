@@ -1,7 +1,9 @@
 from rest_framework import status
 from .test_data import (
     VERIFICATION_ENDPOINT,
-    email
+    email,
+    unexisting_email,
+    invalid_code
 )
 from .base_test import BaseTest
 
@@ -65,12 +67,32 @@ class VerifyUserTest(BaseTest):
             self.response_data.ivalid_email_error
         )
 
+    def test_unexisting_user(self):
+        response = self.client.post(
+            path=VERIFICATION_ENDPOINT,
+            data={
+                'email': unexisting_email,
+                'verification_code': self.verification_code
+            },
+            format='json'
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_401_UNAUTHORIZED
+        )
+
+        self.assertEqual(
+            response.data,
+            self.response_data.user_does_not_exist_error
+        )
+
     def test_mismatching_codes(self):
         response = self.client.post(
             path=VERIFICATION_ENDPOINT,
             data={
                 'email': email,
-                'verification_code': 'invalid code'
+                'verification_code': invalid_code
             },
             format='json'
         )

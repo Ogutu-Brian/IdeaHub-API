@@ -6,6 +6,8 @@ last_name = 'O'
 email = 'test@gmail.com'
 password = 'testpassword'
 confirm_password = 'testpassword'
+unexisting_email = 'unexisting@gmail.com'
+invalid_code = 'invalid code'
 
 
 class SignUpData:
@@ -81,5 +83,11 @@ class SignUpData:
         mismatching_verification_code_error = {
             "verification_code": [
                 "The verification code does not match."
+            ]
+        }
+
+        user_does_not_exist_error = {
+            "user": [
+                "A user with this email address does not exist."
             ]
         }
