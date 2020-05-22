@@ -1,4 +1,5 @@
 SIGN_UP_ENDPOINT = '/authentication/sign-up'
+VERIFICATION_ENDPOINT = '/authentication/verify'
 
 first_name = 'Brian'
 last_name = 'O'
@@ -68,5 +69,17 @@ class SignUpData:
         mismatching_password_error = {
             "password": [
                 "the passwords do not match"
+            ]
+        }
+
+        missing_verification_field_error = {
+            "email": [
+                "This field is required."
+            ]
+        }
+
+        mismatching_verification_code_error = {
+            "verification_code": [
+                "The verification code does not match."
             ]
         }

@@ -1,33 +1,18 @@
-from rest_framework.test import APIClient
-from django.test import TestCase
-from .test_data import SignUpData, SIGN_UP_ENDPOINT
+from .test_data import SIGN_UP_ENDPOINT
 from rest_framework import status
-from django.contrib.auth.models import User
 from ...profile.models import VerificationCode
-
-
-class BaseTest(TestCase):
-    client = APIClient()
-
-    def sign_up(self):
-        response = self.client.post(
-            path=SIGN_UP_ENDPOINT,
-            data=SignUpData.TestData.complete_details,
-            format='json'
-        )
-
-        return response
+from .base_test import BaseTest
 
 
 class TestUserSignUp(BaseTest):
     def tearDown(self):
-        users = User.objects.all()
-        [user.delete() for user in users]
+        super().tearDown()
+        self.clear_all_users()
 
     def test_missing_field(self):
         response = self.client.post(
             path=SIGN_UP_ENDPOINT,
-            data=SignUpData.TestData.incomplete_details,
+            data=self.test_data.incomplete_details,
             format='json'
         )
 
@@ -38,13 +23,13 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            SignUpData.ResponseData.incomplete_details_error
+            self.response_data.incomplete_details_error
         )
 
     def test_invalid_email_field(self):
         response = self.client.post(
             path=SIGN_UP_ENDPOINT,
-            data=SignUpData.TestData.invalid_email_details,
+            data=self.test_data.invalid_email_details,
             format='json'
         )
 
@@ -55,10 +40,10 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            SignUpData.ResponseData.ivalid_email_error,
+            self.response_data.ivalid_email_error,
         )
 
-    def test_signup_more_than_once(self):
+    def test_sign_up_more_than_once(self):
         self.sign_up()
         response = self.sign_up()
 
@@ -69,7 +54,7 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            SignUpData.ResponseData.user_exist_error
+            self.response_data.user_exist_error
         )
 
     def test_successful_sign_up(self):
@@ -82,13 +67,13 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            SignUpData.ResponseData.success_response
+            self.response_data.success_response
         )
 
     def test_password_mismatch(self):
         response = self.client.post(
             path=SIGN_UP_ENDPOINT,
-            data=SignUpData.TestData.mismatching_password_data,
+            data=self.test_data.mismatching_password_data,
             format='json'
         )
 
@@ -99,20 +84,13 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            SignUpData.ResponseData.mismatching_password_error
+            self.response_data.mismatching_password_error
         )
 
     def test_successful_saving_of_verification_code(self):
         response = self.sign_up()
-        code = VerificationCode.objects.get(
-            user__email=SignUpData.TestData.complete_details.get('email')
-        )
+        code = self.get_verification_code()
         verification_codes = VerificationCode.objects.all()
 
         self.assertEqual(len(verification_codes), 1)
         self.assertEqual(verification_codes[0].code, code.code)
-
-
-class VerifyUserTest(TestCase):
-    def setUp(self):
-        pass
