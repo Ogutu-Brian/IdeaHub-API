@@ -1,7 +1,10 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers.signup_serializer import SignUpSerializer
+from .serializers.serializer import(
+    SignUpSerializer,
+    VerifyUserSerializer
+)
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import vcode
@@ -71,5 +74,33 @@ def sign_up(request):
     return response
 
 
-# @api_view(['POST'])
-# def verify_user(self):
+@api_view(['POST'])
+def verify_user(request):
+    response = None
+    data = request.data
+    serializer = VerifyUserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        email = data.get('email')
+        code = data.get('verification_code')
+        verification_code = VerificationCode.objects.get(
+            user__email=email
+        )
+
+        if(verification_code.code != code):
+            response = Response({
+                'verification_code': [
+                    'The verification code does not match.'
+                ]
+            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            pass
+    except ObjectDoesNotExist:
+        response = Response({
+            'user': [
+                'A user with this email address does not exist.'
+            ]
+        }, status=status.HTTP_401_UNAUTHORIZED)
+
+    return response
