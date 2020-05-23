@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from .serializers.serializer import(
     SignUpSerializer,
@@ -14,7 +15,6 @@ from ..profile.models import(
     Profile
 )
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate
 from .utils.response_messages import ResponseMessages
 
 
@@ -36,40 +36,43 @@ def sign_up(request):
     ideahub_email = 'noreply@ideahub.com'
     confirm_password = data.get('confirm_password')
 
-    user, created = User.objects.get_or_create(
-        first_name=first_name,
-        last_name=last_name,
-        email=email,
-        password=password,
-        username=email,
-        is_active=False
-    )
+    try:
+        user = User.objects.get(email=email)
 
-    if not created:
         response = Response({
             'user': [ResponseMessages.existing_user_error_message]
         }, status=status.HTTP_400_BAD_REQUEST)
-    elif password != confirm_password:
-        response = Response({
-            'password': [ResponseMessages.unmatching_password_error]
-        }, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        VerificationCode.objects.create(
-            code=str(code),
-            user=user
-        )
+    except ObjectDoesNotExist:
+        if password != confirm_password:
+            response = Response({
+                'password': [ResponseMessages.unmatching_password_error]
+            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user = User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                username=email,
+                is_active=False
+            )
 
-        send_mail(
-            subject=email_subject,
-            message=email_message,
-            from_email=ideahub_email,
-            recipient_list=[email],
-            fail_silently=False
-        )
+            VerificationCode.objects.create(
+                code=str(code),
+                user=user
+            )
 
-        response = Response({
-            'message': [ResponseMessages.success_signup_message]
-        }, status=status.HTTP_201_CREATED)
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=ideahub_email,
+                recipient_list=[email],
+                fail_silently=False
+            )
+
+            response = Response({
+                'message': [ResponseMessages.success_signup_message]
+            }, status=status.HTTP_201_CREATED)
 
     return response
 
@@ -84,27 +87,34 @@ def verify_user(request):
     try:
         email = data.get('email')
         code = data.get('verification_code')
-        verification_code = VerificationCode.objects.get(
-            user__email=email
-        )
+        user = User.objects.get(email=email)
 
-        if verification_code.code != code:
-            response = Response({
-                'verification_code': [ResponseMessages.mismatching_verification_code]
-            }, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            user = verification_code.user
-            user.is_active = True
-            user.save()
-            Profile.objects.create(user=user)
+        if not user.is_active:
             verification_code = VerificationCode.objects.get(
-                user__email=user.email
+                user__email=email
             )
-            verification_code.delete()
 
+            if verification_code.code != code:
+                response = Response({
+                    'verification_code': [ResponseMessages.mismatching_verification_code]
+                }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                user = verification_code.user
+                user.is_active = True
+                user.save()
+                Profile.objects.create(user=user)
+                verification_code = VerificationCode.objects.get(
+                    user__email=user.email
+                )
+                verification_code.delete()
+
+                response = Response({
+                    'message': [ResponseMessages.successful_account_verification]
+                }, status=status.HTTP_200_OK)
+        else:
             response = Response({
-                'message': [ResponseMessages.successful_account_verification]
-            }, status=status.HTTP_200_OK)
+                'verification_code': [ResponseMessages.multiple_verification_error]
+            }, status=status.HTTP_403_FORBIDDEN)
     except ObjectDoesNotExist:
         response = Response({
             'user': [ResponseMessages.unexisting_user_error]
@@ -131,13 +141,12 @@ def login(request):
                 'user': [ResponseMessages.unverified_account_error]
             }, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            authenticateduser = authenticate(
-                request=request,
-                username=email,
-                password=password
+            matching_password = check_password(
+                password=password,
+                encoded=user.password
             )
 
-            if not authenticateduser:
+            if not matching_password:
                 response = Response({
                     'message': [ResponseMessages.invalid_password_error]
                 }, status=status.HTTP_401_UNAUTHORIZED)

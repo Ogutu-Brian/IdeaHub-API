@@ -114,3 +114,9 @@ class SignUpData:
                 ResponseMessages.invalid_password_error
             ]
         }
+
+        multiple_verification_error = {
+            'verification_code': [
+                ResponseMessages.multiple_verification_error
+            ]
+        }

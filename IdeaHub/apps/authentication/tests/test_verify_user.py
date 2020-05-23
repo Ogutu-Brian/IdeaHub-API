@@ -128,3 +128,23 @@ class VerifyUserTest(BaseTest):
         verification_codes = VerificationCode.objects.all()
 
         self.assertEqual(len(verification_codes), 0)
+
+    def test_multiple_verification(self):
+        self.verify_user()
+        response = self.client.post(
+            path=VERIFICATION_ENDPOINT,
+            data={
+                'verification_code': '7963',
+                'email': email
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_403_FORBIDDEN
+        )
+
+        self.assertEqual(
+            response.data,
+            self.response_data.multiple_verification_error
+        )
