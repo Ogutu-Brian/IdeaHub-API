@@ -44,7 +44,7 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            self.response_data.ivalid_email_error,
+            self.response_data.invalid_email_error,
         )
 
     def test_sign_up_more_than_once(self):

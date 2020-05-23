@@ -23,18 +23,6 @@ class VerifyUserTest(BaseTest):
         super().tearDown()
         self.clear_all_users()
 
-    def post_verification_code(self):
-        response = self.client.post(
-            path=VERIFICATION_ENDPOINT,
-            data={
-                'verification_code': self.verification_code,
-                'email': email
-            },
-            format='json'
-        )
-
-        return response
-
     def test_missing_field(self):
         response = self.client.post(
             path=VERIFICATION_ENDPOINT,
@@ -49,7 +37,7 @@ class VerifyUserTest(BaseTest):
 
         self.assertEqual(
             response.data,
-            self.response_data.missing_verification_field_error
+            self.response_data.missing_email_field_error
         )
 
     def test_invalid_email(self):
@@ -69,7 +57,7 @@ class VerifyUserTest(BaseTest):
 
         self.assertEqual(
             response.data,
-            self.response_data.ivalid_email_error
+            self.response_data.invalid_email_error
         )
 
     def test_unexisting_user(self):
@@ -113,7 +101,7 @@ class VerifyUserTest(BaseTest):
         )
 
     def test_activating_user(self):
-        response = self.post_verification_code()
+        response = self.verify_user()
         user = User.objects.get(email=email)
 
         self.assertEqual(
@@ -129,14 +117,14 @@ class VerifyUserTest(BaseTest):
         )
 
     def test_creating_user_profile(self):
-        self.post_verification_code()
+        self.verify_user()
 
         profile = Profile.objects.get(user__email=email)
 
         self.assertEqual(profile.user.email, email)
 
     def test_delete_verification_code(self):
-        self.post_verification_code()
+        self.verify_user()
         verification_codes = VerificationCode.objects.all()
 
         self.assertEqual(len(verification_codes), 0)

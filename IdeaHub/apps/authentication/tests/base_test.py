@@ -6,7 +6,8 @@ from .test_data import (
     SignUpData,
     SIGN_UP_ENDPOINT,
     VERIFICATION_ENDPOINT,
-    email
+    LOGIN_ENDPOINT,
+    email,
 )
 
 
@@ -34,3 +35,25 @@ class BaseTest(TestCase):
         )
 
         return code
+
+    def verify_user(self):
+        verification_code = self.get_verification_code()
+
+        response = self.client.post(
+            path=VERIFICATION_ENDPOINT,
+            data={
+                'verification_code': verification_code,
+                'email': email
+            }
+        )
+
+        return response
+
+    def login(self):
+        response = self.client.post(
+            path=LOGIN_ENDPOINT,
+            data=self.test_data.complete_details,
+            format='json'
+        )
+
+        return response
