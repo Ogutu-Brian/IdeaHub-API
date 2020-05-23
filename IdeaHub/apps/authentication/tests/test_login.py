@@ -2,6 +2,7 @@ from .base_test import BaseTest
 from .test_data import (
     password,
     email,
+    invalid_password,
     LOGIN_ENDPOINT
 )
 from rest_framework import status
@@ -78,7 +79,14 @@ class TestLogin(BaseTest):
     def test_invalid_password(self):
         self.sign_up()
         self.verify_user()
-        response = self.login()
+        response = self.client.post(
+            path=LOGIN_ENDPOINT,
+            data={
+                'email': email,
+                'password': invalid_password
+            },
+            format='json'
+        )
 
         self.assertEqual(
             response.status_code,
@@ -89,3 +97,8 @@ class TestLogin(BaseTest):
             response.data,
             self.response_data.invalid_password_error
         )
+
+    def test_successful_log_in(self):
+        self.sign_up()
+        self.verify_user()
+        response = self.login()

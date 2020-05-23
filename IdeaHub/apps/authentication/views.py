@@ -132,7 +132,8 @@ def login(request):
             }, status=status.HTTP_401_UNAUTHORIZED)
         else:
             authenticateduser = authenticate(
-                username=user.email,
+                request=request,
+                username=email,
                 password=password
             )
 

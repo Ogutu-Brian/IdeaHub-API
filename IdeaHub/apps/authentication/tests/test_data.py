@@ -12,6 +12,7 @@ password = 'testpassword'
 confirm_password = 'testpassword'
 unexisting_email = 'unexisting@gmail.com'
 invalid_code = 'invalid code'
+invalid_password = 'invalid password'
 
 
 class SignUpData:
