@@ -1,5 +1,12 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import (
+    api_view,
+    permission_classes
+)
+from django.contrib.auth import (
+    authenticate,
+    login
+)
 from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from .serializers.serializer import(
@@ -125,7 +132,7 @@ def verify_user(request):
 
 
 @api_view(['POST'])
-def login(request):
+def login_user(request):
     response = None
     data = request.data
     serializer = LoginSerializer(data=data)
@@ -152,6 +159,8 @@ def login(request):
                 }, status=status.HTTP_401_UNAUTHORIZED)
             else:
                 token = AccessToken.for_user(user=user)
+                authenticate(username=email, password=password)
+                login(request=request, user=user)
                 response = Response({
                     'access_token': str(token)
                 }, status=status.HTTP_200_OK)
@@ -161,3 +170,9 @@ def login(request):
         }, status=status.HTTP_401_UNAUTHORIZED)
 
     return response
+
+
+# @api_view(['POST'])
+# @permission_classes[]
+# def logout(request):
+#     pass
