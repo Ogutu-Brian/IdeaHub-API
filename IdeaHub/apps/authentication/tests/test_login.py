@@ -98,7 +98,12 @@ class TestLogin(BaseTest):
             self.response_data.invalid_password_error
         )
 
-    # def test_successful_log_in(self):
-    #     self.sign_up()
-    #     self.verify_user()
-    #     response = self.login()
+    def test_successful_log_in(self):
+        self.sign_up()
+        self.verify_user()
+        response = self.login()
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )

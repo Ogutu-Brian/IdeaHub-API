@@ -16,6 +16,7 @@ from ..profile.models import(
 )
 from django.core.mail import send_mail
 from .utils.response_messages import ResponseMessages
+from rest_framework_simplejwt.tokens import AccessToken
 
 
 @api_view(['POST'])
@@ -129,7 +130,6 @@ def login(request):
     data = request.data
     serializer = LoginSerializer(data=data)
     serializer.is_valid(raise_exception=True)
-
     email = data.get('email')
     password = data.get('password')
 
@@ -151,7 +151,10 @@ def login(request):
                     'message': [ResponseMessages.invalid_password_error]
                 }, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                pass
+                token = AccessToken.for_user(user=user)
+                response = Response({
+                    'access_token': str(token)
+                }, status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
         response = Response({
             'user': [ResponseMessages.unexisting_user_error]
