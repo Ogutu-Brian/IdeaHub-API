@@ -5,7 +5,8 @@ from rest_framework.decorators import (
 )
 from django.contrib.auth import (
     authenticate,
-    login
+    login,
+    logout
 )
 from django.contrib.auth.hashers import check_password
 from rest_framework import status
@@ -23,7 +24,12 @@ from ..profile.models import(
 )
 from django.core.mail import send_mail
 from .utils.response_messages import ResponseMessages
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import (
+    RefreshToken,
+    OutstandingToken
+)
+from rest_framework.permissions import IsAuthenticated
+import datetime
 
 
 @api_view(['POST'])
@@ -158,11 +164,10 @@ def login_user(request):
                     'message': [ResponseMessages.invalid_password_error]
                 }, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                token = AccessToken.for_user(user=user)
-                authenticate(username=email, password=password)
-                login(request=request, user=user)
+                refresh = RefreshToken.for_user(user=user)
                 response = Response({
-                    'access_token': str(token)
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh)
                 }, status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
         response = Response({
@@ -172,7 +177,22 @@ def login_user(request):
     return response
 
 
-# @api_view(['POST'])
-# @permission_classes[]
-# def logout(request):
-#     pass
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_user(request):
+    email = request.user
+    response = None
+
+    try:
+        user = User.objects.get(email=email)
+        outstandingToken = OutstandingToken.objects.get(user=user)
+        outstandingToken.delete()
+
+        response = Response({
+            'message': [ResponseMessages.logout_message]
+        }, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist:
+        response = Response({
+            'message': [ResponseMessages.invalid_token]
+        }, status=status.HTTP_401_UNAUTHORIZED)
+    return response

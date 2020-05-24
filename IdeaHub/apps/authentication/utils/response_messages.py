@@ -8,3 +8,5 @@ class ResponseMessages:
     unverified_account_error = 'The user account is not verified.'
     invalid_password_error = 'Either the email or the password is incorrect.'
     multiple_verification_error = 'The user account is already verified.'
+    logout_message = 'You have successfully logged out.'
+    invalid_token = 'The token is not valid.'

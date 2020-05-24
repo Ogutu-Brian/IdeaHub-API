@@ -3,6 +3,8 @@ from ..utils.response_messages import ResponseMessages
 SIGN_UP_ENDPOINT = '/authentication/sign-up'
 VERIFICATION_ENDPOINT = '/authentication/verify'
 LOGIN_ENDPOINT = '/authentication/login'
+LOGOUT_ENDPOINT = '/authentication/logout'
+REFRESH_TOKEN_ENDPOINT = '/authentication/refresh_token'
 
 
 first_name = 'Brian'
@@ -119,4 +121,16 @@ class SignUpData:
             'verification_code': [
                 ResponseMessages.multiple_verification_error
             ]
+        }
+
+        no_credentials_error = {
+            'detail': 'Authentication credentials were not provided.'
+        }
+
+        successful_logout = {
+            'message': [ResponseMessages.logout_message]
+        }
+
+        invalid_token_error = {
+            'message': [ResponseMessages.invalid_token]
         }
