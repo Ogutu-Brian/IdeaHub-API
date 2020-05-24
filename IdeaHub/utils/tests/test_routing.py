@@ -1,5 +1,8 @@
 from django.test import TestCase
-from ..routing import get_app_routes, APP_INITIAL
+from ..routing import (
+    get_app_routes,
+    APP_INITIAL
+)
 
 
 class RoutingTests(TestCase):
