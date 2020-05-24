@@ -44,7 +44,7 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            self.response_data.ivalid_email_error,
+            self.response_data.invalid_email_error,
         )
 
     def test_sign_up_more_than_once(self):
@@ -97,7 +97,7 @@ class TestUserSignUp(BaseTest):
         verification_codes = VerificationCode.objects.all()
 
         self.assertEqual(len(verification_codes), 1)
-        self.assertEqual(verification_codes[0].code, code.code)
+        self.assertEqual(verification_codes[0].code, code)
 
     def test_successful_saving_user(self):
         self.sign_up()

@@ -1,5 +1,11 @@
+from ..utils.response_messages import ResponseMessages
+
 SIGN_UP_ENDPOINT = '/authentication/sign-up'
 VERIFICATION_ENDPOINT = '/authentication/verify'
+LOGIN_ENDPOINT = '/authentication/login'
+LOGOUT_ENDPOINT = '/authentication/logout'
+REFRESH_TOKEN_ENDPOINT = '/authentication/refresh_token'
+
 
 first_name = 'Brian'
 last_name = 'O'
@@ -8,6 +14,7 @@ password = 'testpassword'
 confirm_password = 'testpassword'
 unexisting_email = 'unexisting@gmail.com'
 invalid_code = 'invalid code'
+invalid_password = 'invalid password'
 
 
 class SignUpData:
@@ -50,7 +57,7 @@ class SignUpData:
             ]
         }
 
-        ivalid_email_error = {
+        invalid_email_error = {
             'email': [
                 'Enter a valid email address.'
             ]
@@ -58,23 +65,23 @@ class SignUpData:
 
         success_response = {
             'message': [
-                'a verification code has been sent to your email.'
+                ResponseMessages.success_signup_message
             ]
         }
 
         user_exist_error = {
             'user': [
-                'a user with this email address exist.'
+                ResponseMessages.existing_user_error_message
             ]
         }
 
         mismatching_password_error = {
             'password': [
-                'the passwords do not match'
+                ResponseMessages.unmatching_password_error
             ]
         }
 
-        missing_verification_field_error = {
+        missing_email_field_error = {
             'email': [
                 'This field is required.'
             ]
@@ -82,18 +89,48 @@ class SignUpData:
 
         mismatching_verification_code_error = {
             'verification_code': [
-                'The verification code does not match.'
+                ResponseMessages.mismatching_verification_code
             ]
         }
 
         user_does_not_exist_error = {
             'user': [
-                'A user with this email address does not exist.'
+                ResponseMessages.unexisting_user_error
             ]
         }
 
         verify_user_response = {
             'message': [
-                'User account has successfully been activated.'
+                ResponseMessages.successful_account_verification
             ]
+        }
+
+        unverified_user_error = {
+            'user': [
+                ResponseMessages.unverified_account_error
+            ]
+        }
+
+        invalid_password_error = {
+            'message': [
+                ResponseMessages.invalid_password_error
+            ]
+        }
+
+        multiple_verification_error = {
+            'verification_code': [
+                ResponseMessages.multiple_verification_error
+            ]
+        }
+
+        no_credentials_error = {
+            'detail': 'Authentication credentials were not provided.'
+        }
+
+        successful_logout = {
+            'message': [ResponseMessages.logout_message]
+        }
+
+        invalid_token_error = {
+            'message': [ResponseMessages.invalid_token]
         }
