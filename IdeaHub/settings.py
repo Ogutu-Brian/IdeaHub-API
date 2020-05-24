@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 EMAIL_HOST = os.getenv('EMAIL_HOST')
