@@ -195,4 +195,5 @@ def logout_user(request):
         response = Response({
             'message': [ResponseMessages.invalid_token]
         }, status=status.HTTP_401_UNAUTHORIZED)
+
     return response
