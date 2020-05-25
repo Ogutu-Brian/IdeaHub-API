@@ -1,27 +1,15 @@
 from django.conf.urls import include
 from django.urls import path
-from django.contrib.auth.models import User
 from django.contrib import admin
-from rest_framework import routers, serializers, viewsets
+from .utils.routing import get_app_routes
+from IdeaHub.apps import authentication
 
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email']
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-router = routers.DefaultRouter()
-router.register('users', UserViewSet)
-
+admin.site.site_header = 'IdeaHub'
+admin.site.index_title = 'IdeaHub Administration'
 
 urlpatterns = [
-    path('admin', admin.site.urls),
-    path('', include(router.urls)),
-    path('example_users/', include('IdeaHub.Apps.Profile.urls')),
+    path('authentication/', include(
+        get_app_routes(authentication.APP_NAME)
+    )),
+    path('admin/', admin.site.urls)
 ]
