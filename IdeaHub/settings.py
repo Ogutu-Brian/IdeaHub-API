@@ -149,19 +149,19 @@ DATABASE_PORT = os.getenv('DATABASE_PORT')
 if sys.argv[1] == 'test':
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.path.join(BASE_DIR, 'postgresql_psycopg2'),
         }
     }
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': DATABASE_NAME,
-            'USER': USER_NAME,
-            'PASSWORD': DATABASE_PASSWORD,
-            'HOST': DATABASE_HOST,
-            'PORT': DATABASE_PORT
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'DATABASE_NAME',
+            'USER': 'USER_NAME',
+            'PASSWORD': 'DATABASE_PASSWORD',
+            'HOST': 'DATABASE_HOST',
+            'PORT': 'DATABASE_PORT'
         }
     }
 
