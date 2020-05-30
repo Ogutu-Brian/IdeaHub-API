@@ -140,28 +140,28 @@ WSGI_APPLICATION = 'IdeaHub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASE_NAME = os.getenv('DATABASE_NAME')
-USER_NAME = os.getenv('USER_NAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
-DATABASE_HOST = os.getenv('DATABASE_HOST')
-DATABASE_PORT = os.getenv('DATABASE_PORT')
+DATABASE_NAME = os.getenv('DATABASE_NAME', os.path.join(BASE_DIR, "db.sqlite3"))
+USER_NAME = os.getenv('USER_NAME', "user")
+DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', "password")
+DATABASE_HOST = os.getenv('DATABASE_HOST', "localhost")
+DATABASE_PORT = os.getenv('DATABASE_PORT', "5432")
 
 if sys.argv[1] == 'test':
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.path.join(BASE_DIR, 'postgresql_psycopg2'),
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'DATABASE_NAME',
-            'USER': 'USER_NAME',
-            'PASSWORD': 'DATABASE_PASSWORD',
-            'HOST': 'DATABASE_HOST',
-            'PORT': 'DATABASE_PORT'
+            'NAME': DATABASE_NAME,
+            'USER': USER_NAME,
+            'PASSWORD': DATABASE_PASSWORD,
+            'HOST': DATABASE_HOST,
+            'PORT': DATABASE_PORT
         }
     }
 
