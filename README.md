@@ -23,12 +23,19 @@
 # Setting up the project
 * Clone the repo : `git clone https://github.com/Ogutu-Brian/IdeaHub-API.git`
 * Navigate to the cloned folder `$ cd IdeaHub-API/`
-* Run `$ pipenv shell` . This will create a virtual environment and pipfile for package requirements.
-* Run `$ pipenv install` to install the packages in your environment.
-* $ touch .env
-* copy content of example_env.txt to .env and update the values to your own configs
-* Run migrations `python manage.py migrate`
-* Start the server `python manage.py runserver`
+* Run `$ docker-compose up -d --build` . This is to build the docker image and install all dependencies
+* Run `$ docker-compose exec web python manage.py migrate` to create the superuser
+* Run `$ docker-compose exec web python manage.py createsuperuser` to create the superuser
+
+* Run `$ docker-compose down`  to stop running containers
+
+* Run `$ docker-compose up`  to run the containers
+
+
+
+
+
+
 
 
 # Running Unit Tests

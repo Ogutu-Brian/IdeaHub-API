@@ -16,15 +16,15 @@ services:
             - ./.env
     db:
         image: postgres:11
-#         volumes: 
-#             - postgres_data:/var/lib/postgresql/data/
-#         environment: 
-#             - POSTGRES_USER=postgres
-#             - POSTGRES_PASSWORD=postgres
-#             - POSTGRES_DB=postgres
+        volumes: 
+            - postgres_data:/var/lib/postgresql/data/
+        environment: 
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=postgres
 
 
-# volumes: 
-#         postgres_data:
+volumes: 
+        postgres_data:
 
 
