@@ -7,7 +7,10 @@ services:
         build: .
         command: python /code/manage.py runserver 0.0.0.0:8000
         environment: 
-            - ENVIRONMENT=development
+            - ENVIRONMENT=production
+            - SECRET_KEY=p_o3vp1rg5)t^lxm9-43%0)s-=1qpeq%o7gfq+e4wqrtxvy  #just a place holder
+            - DEBUG=0
+            
         volumes:
             - .:/code
         ports:
@@ -16,8 +19,6 @@ services:
             - db
         env_file: 
             - ./.env
-
-        
     db:
         image: postgres:11
         volumes: 
