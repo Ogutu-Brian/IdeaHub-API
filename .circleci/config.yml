@@ -11,23 +11,10 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
+      - run: ./ci_variables.sh
       - run:
-          command: |
-            DATABASE_NAME='ideahub'
-            USER_NAME='brian'
-            DATABASE_PASSWORD='ideaHub'
-            DATABASE_HOST='localhost'
-            DATABASE_PORT=5432
-            SECRET_KEY='your secret key'
-            DEBUG=True
-            SENDGRID_API_KEY='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'
-            EMAIL_HOST_USER='apikey'
-            EMAIL_HOST='smtp.sendgrid.net'
-            EMAIL_PASSWORD='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'
-            EMAIL_PORT=587
-            EMAIL_USE_TLS=True
+          command: ./manage.py test
           name: Test
-      - run: ./manage.py test
 
 workflows:
   main:
