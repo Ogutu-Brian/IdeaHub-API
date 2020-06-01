@@ -1,6 +1,6 @@
 class ResponseMessages:
     success_signup_message = 'A verification code has been sent to your email.'
-    existing_user_error_message = 'A user with this email address exist.'
+    existing_user_error_message = 'A user with this email address exists.'
     mismatching_verification_code = 'The verification code does not match.'
     unmatching_password_error = 'The passwords do not match.'
     successful_account_verification = 'User account has successfully been activated.'
