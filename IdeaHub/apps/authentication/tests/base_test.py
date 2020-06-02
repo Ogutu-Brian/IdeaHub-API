@@ -9,7 +9,8 @@ from .test_data import (
     VERIFICATION_ENDPOINT,
     LOGIN_ENDPOINT,
     LOGOUT_ENDPOINT,
-    email,
+    CODE_RESEND_ENDPOINT,
+    email
 )
 
 
@@ -30,6 +31,10 @@ class BaseTest(APITestCase):
     def clear_all_users(self):
         users = User.objects.all()
         [user.delete() for user in users]
+
+    def clear_all_verification_codes(self):
+        Verification_codes = VerificationCode.objects.all()
+        [verification_code.delete() for verification_code in Verification_codes]
 
     def get_verification_code(self):
         code = VerificationCode.objects.get(
@@ -68,6 +73,15 @@ class BaseTest(APITestCase):
     def logout(self):
         response = self.client.post(
             path=LOGOUT_ENDPOINT,
+            data=self.test_data.complete_details,
+            format='json'
+        )
+
+        return response
+
+    def resend_verification_code(self):
+        response = self.client.post(
+            path=CODE_RESEND_ENDPOINT,
             data=self.test_data.complete_details,
             format='json'
         )

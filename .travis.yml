@@ -8,6 +8,6 @@ before_script:
 install:
   - pip install -r requirements.txt
 script:
-  - coverage run manage.py test
+  - coverage run manage.py test -v 2
 after_success:
   - coveralls
