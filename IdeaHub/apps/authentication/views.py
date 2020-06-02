@@ -1,33 +1,18 @@
 from rest_framework.response import Response
-from rest_framework.decorators import (
-    api_view,
-    permission_classes
-)
-from django.contrib.auth import (
-    authenticate,
-    login,
-    logout
-)
+from rest_framework.decorators import (api_view, permission_classes)
+from django.contrib.auth import (authenticate, login, logout)
 from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from .serializers.serializer import(
-    SignUpSerializer,
-    VerifyUserSerializer,
-    LoginSerializer
+    SignUpSerializer, VerifyUserSerializer, LoginSerializer
 )
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import vcode
-from ..profile.models import(
-    VerificationCode,
-    Profile
-)
+from ..profile.models import(VerificationCode, Profile)
 from django.core.mail import send_mail
 from .utils.response_messages import ResponseMessages
-from rest_framework_simplejwt.tokens import (
-    RefreshToken,
-    OutstandingToken
-)
+from rest_framework_simplejwt.tokens import (RefreshToken, OutstandingToken)
 from rest_framework.permissions import IsAuthenticated
 import datetime
 
@@ -121,9 +106,12 @@ def verify_user(request):
                     user__email=user.email
                 )
                 verification_code.delete()
+                refresh = RefreshToken.for_user(user=user)
 
                 response = Response({
-                    'message': [ResponseMessages.successful_account_verification]
+                    'message': [ResponseMessages.successful_account_verification],
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh)
                 }, status=status.HTTP_200_OK)
         else:
             response = Response({
@@ -183,17 +171,17 @@ def logout_user(request):
     email = request.user
     response = None
 
-    try:
-        user = User.objects.get(email=email)
-        outstandingToken = OutstandingToken.objects.get(user=user)
-        outstandingToken.delete()
+    user = User.objects.get(email=email)
+    outstandingTokens = OutstandingToken.objects.filter(user=user)
+    if not len(outstandingTokens):
+        response = Response({
+            'message': [ResponseMessages.invalid_token]
+        }, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        [token.delete() for token in outstandingTokens]
 
         response = Response({
             'message': [ResponseMessages.logout_message]
         }, status=status.HTTP_200_OK)
-    except ObjectDoesNotExist:
-        response = Response({
-            'message': [ResponseMessages.invalid_token]
-        }, status=status.HTTP_401_UNAUTHORIZED)
 
     return response

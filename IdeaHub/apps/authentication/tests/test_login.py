@@ -1,10 +1,5 @@
 from .base_test import BaseTest
-from .test_data import (
-    password,
-    email,
-    invalid_password,
-    LOGIN_ENDPOINT
-)
+from .test_data import (password, email, invalid_password, LOGIN_ENDPOINT)
 from rest_framework import status
 
 
