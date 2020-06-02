@@ -101,3 +101,17 @@ class TestUserSignUp(BaseTest):
         user = User.objects.get(email=email)
 
         self.assertEqual(user.is_active, False)
+
+    def test_signup_unverified_account(self):
+        self.sign_up()
+        response = self.sign_up()
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+
+        self.assertEqual(
+            response.data,
+            self.response_data.success_signup_response
+        )
