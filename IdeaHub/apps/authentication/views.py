@@ -11,10 +11,9 @@ from .serializers.serializer import(
 )
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-import vcode
 from ..profile.models import(VerificationCode, Profile)
-from django.core.mail import send_mail
 from .utils.response_messages import ResponseMessages
+from .utils.helpers import send_verification_code
 from rest_framework_simplejwt.tokens import (RefreshToken, OutstandingToken)
 from rest_framework.permissions import IsAuthenticated
 import datetime
@@ -27,83 +26,38 @@ def sign_up(request):
     serializer.is_valid(raise_exception=True)
 
     response = None
-    code = vcode.digits()
     first_name = data.get('first_name')
     last_name = data.get('last_name')
     email = data.get('email')
     password = data.get('password')
     username = data.get('email')
-    email_subject = 'IdeaHub Verification Code'
-    email_message = 'Your verification code is {}'.format(code)
-    ideahub_email = 'noreply@ideahub.com'
     confirm_password = data.get('confirm_password')
 
-    def send_verification_code(user_account):
-        result = None
-
-        verification_code, created = VerificationCode.objects.get_or_create(
-            user=user_account,
-            defaults={'code': str(code)}
+    if password != confirm_password:
+        response = Response({
+            'password': [ResponseMessages.unmatching_password_error]
+        }, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'password': password,
+                'username': username,
+                'is_active': False
+            }
         )
-
-        email_message = 'Your verification code is {}'.format(
-            verification_code.code
-        )
-
-        send_mail(
-            subject=email_subject,
-            message=email_message,
-            from_email=ideahub_email,
-            recipient_list=[email],
-            fail_silently=False
-        )
-
-        result = Response({
-            'message': [ResponseMessages.success_signup_message]
-        }, status=status.HTTP_201_CREATED)
-
-        return result
-
-    try:
-        user = User.objects.get(email=email)
 
         if not user.is_active:
-            response = send_verification_code(user_account=user)
+            user.set_password(password)
+            user.save()
+            response = send_verification_code(user=user, email=email)
         else:
             response = Response({
                 'user': [ResponseMessages.existing_user_error_message]
             }, status=status.HTTP_400_BAD_REQUEST)
-    except ObjectDoesNotExist:
-        if password != confirm_password:
-            response = Response({
-                'password': [ResponseMessages.unmatching_password_error]
-            }, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            user = User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=password,
-                username=email,
-                is_active=False
-            )
-
-            VerificationCode.objects.create(
-                code=str(code),
-                user=user
-            )
-
-            send_mail(
-                subject=email_subject,
-                message=email_message,
-                from_email=ideahub_email,
-                recipient_list=[email],
-                fail_silently=False
-            )
-
-            response = Response({
-                'message': [ResponseMessages.success_signup_message]
-            }, status=status.HTTP_201_CREATED)
 
     return response
 
@@ -225,34 +179,16 @@ def resend_verification_code(request):
     serializer = CodeResendSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     email = data.get('email')
-    code = vcode.digits()
 
     try:
-        email_subject = 'IdeaHub Verification Code'
-        ideahub_email = 'noreply@ideahub.com'
         user = User.objects.get(email=email)
 
         if not user.is_active:
-            verification_code, created = VerificationCode.objects.get_or_create(
+            response = send_verification_code(
                 user=user,
-                defaults={'code': code}
+                email=email,
+                response_status=status.HTTP_200_OK
             )
-
-            email_message = 'Your verification code is {}'.format(
-                verification_code.code
-            )
-
-            send_mail(
-                subject=email_subject,
-                message=email_message,
-                from_email=ideahub_email,
-                recipient_list=[email],
-                fail_silently=False
-            )
-
-            response = Response({
-                'message': [ResponseMessages.success_signup_message]
-            }, status=status.HTTP_200_OK)
         else:
             response = Response({
                 'verification_code': [
