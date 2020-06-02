@@ -103,6 +103,7 @@ class VerifyUserTest(BaseTest):
     def test_activating_user(self):
         response = self.verify_user()
         user = User.objects.get(email=email)
+        response_keys = response.data.keys()
 
         self.assertEqual(
             response.status_code,
@@ -112,8 +113,13 @@ class VerifyUserTest(BaseTest):
         self.assertEqual(user.is_active, True)
 
         self.assertEqual(
-            response.data,
-            self.response_data.verify_user_response
+            response.data.get('message'),
+            self.response_data.verify_user_response.get('message')
+        )
+
+        self.assertEqual(
+            'access' in response_keys and 'refresh' in response_keys,
+            True
         )
 
     def test_creating_user_profile(self):

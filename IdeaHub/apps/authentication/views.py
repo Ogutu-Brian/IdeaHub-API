@@ -121,9 +121,12 @@ def verify_user(request):
                     user__email=user.email
                 )
                 verification_code.delete()
+                refresh = RefreshToken.for_user(user=user)
 
                 response = Response({
-                    'message': [ResponseMessages.successful_account_verification]
+                    'message': [ResponseMessages.successful_account_verification],
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh)
                 }, status=status.HTTP_200_OK)
         else:
             response = Response({
@@ -183,17 +186,17 @@ def logout_user(request):
     email = request.user
     response = None
 
-    try:
-        user = User.objects.get(email=email)
-        outstandingToken = OutstandingToken.objects.get(user=user)
-        outstandingToken.delete()
+    user = User.objects.get(email=email)
+    outstandingTokens = OutstandingToken.objects.filter(user=user)
+    if not len(outstandingTokens):
+        response = Response({
+            'message': [ResponseMessages.invalid_token]
+        }, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        [token.delete() for token in outstandingTokens]
 
         response = Response({
             'message': [ResponseMessages.logout_message]
         }, status=status.HTTP_200_OK)
-    except ObjectDoesNotExist:
-        response = Response({
-            'message': [ResponseMessages.invalid_token]
-        }, status=status.HTTP_401_UNAUTHORIZED)
 
     return response
