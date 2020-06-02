@@ -38,12 +38,41 @@ def sign_up(request):
     ideahub_email = 'noreply@ideahub.com'
     confirm_password = data.get('confirm_password')
 
+    def send_verification_code(user_account):
+        result = None
+
+        verification_code, created = VerificationCode.objects.get_or_create(
+            user=user_account,
+            defaults={'code': str(code)}
+        )
+
+        email_message = 'Your verification code is {}'.format(
+            verification_code.code
+        )
+
+        send_mail(
+            subject=email_subject,
+            message=email_message,
+            from_email=ideahub_email,
+            recipient_list=[email],
+            fail_silently=False
+        )
+
+        result = Response({
+            'message': [ResponseMessages.success_signup_message]
+        }, status=status.HTTP_201_CREATED)
+
+        return result
+
     try:
         user = User.objects.get(email=email)
 
-        response = Response({
-            'user': [ResponseMessages.existing_user_error_message]
-        }, status=status.HTTP_400_BAD_REQUEST)
+        if not user.is_active:
+            response = send_verification_code(user_account=user)
+        else:
+            response = Response({
+                'user': [ResponseMessages.existing_user_error_message]
+            }, status=status.HTTP_400_BAD_REQUEST)
     except ObjectDoesNotExist:
         if password != confirm_password:
             response = Response({
@@ -203,7 +232,7 @@ def resend_verification_code(request):
         ideahub_email = 'noreply@ideahub.com'
         user = User.objects.get(email=email)
 
-        if(not user.is_active):
+        if not user.is_active:
             verification_code, created = VerificationCode.objects.get_or_create(
                 user=user,
                 defaults={'code': code}

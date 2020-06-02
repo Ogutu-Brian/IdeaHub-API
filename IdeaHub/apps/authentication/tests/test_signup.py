@@ -46,6 +46,7 @@ class TestUserSignUp(BaseTest):
 
     def test_sign_up_more_than_once(self):
         self.sign_up()
+        self.verify_user()
         response = self.sign_up()
 
         self.assertEqual(
@@ -108,7 +109,7 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_200_OK
+            status.HTTP_201_CREATED
         )
 
         self.assertEqual(
