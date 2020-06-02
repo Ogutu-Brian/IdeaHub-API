@@ -63,6 +63,20 @@ class TestCodeResend(BaseTest):
             self.response_data.user_does_not_exist_error
         )
 
+    def test_already_activated_user(self):
+        self.verify_user()
+        response = self.resend_verification_code()
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+
+        self.assertEqual(
+            response.data,
+            self.response_data.multiple_verification_error
+        )
+
     def test_existing_verification_code(self):
         self.clear_all_verification_codes()
         response = self.resend_verification_code()

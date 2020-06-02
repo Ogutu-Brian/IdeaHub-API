@@ -202,26 +202,34 @@ def reset_verification_code(request):
         email_subject = 'IdeaHub Verification Code'
         ideahub_email = 'noreply@ideahub.com'
         user = User.objects.get(email=email)
-        verification_code, created = VerificationCode.objects.get_or_create(
-            user=user,
-            defaults={'code': code}
-        )
 
-        email_message = 'Your verification code is {}'.format(
-            verification_code.code
-        )
+        if(not user.is_active):
+            verification_code, created = VerificationCode.objects.get_or_create(
+                user=user,
+                defaults={'code': code}
+            )
 
-        send_mail(
-            subject=email_subject,
-            message=email_message,
-            from_email=ideahub_email,
-            recipient_list=[email],
-            fail_silently=False
-        )
+            email_message = 'Your verification code is {}'.format(
+                verification_code.code
+            )
 
-        response = Response({
-            'message': [ResponseMessages.success_signup_message]
-        }, status=status.HTTP_200_OK)
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=ideahub_email,
+                recipient_list=[email],
+                fail_silently=False
+            )
+
+            response = Response({
+                'message': [ResponseMessages.success_signup_message]
+            }, status=status.HTTP_200_OK)
+        else:
+            response = Response({
+                'verification_code': [
+                    ResponseMessages.multiple_verification_error
+                ]
+            }, status=status.HTTP_400_BAD_REQUEST)
     except ObjectDoesNotExist:
         response = Response({
             'user': [ResponseMessages.unexisting_user_error]
