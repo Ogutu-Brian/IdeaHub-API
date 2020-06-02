@@ -97,8 +97,14 @@ class TestLogin(BaseTest):
         self.sign_up()
         self.verify_user()
         response = self.login()
+        response_keys = response.data.keys()
 
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK
+        )
+
+        self.assertEqual(
+            'access' in response_keys and 'refresh' in response_keys,
+            True
         )
