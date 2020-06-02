@@ -68,7 +68,7 @@ class TestUserSignUp(BaseTest):
 
         self.assertEqual(
             response.data,
-            self.response_data.success_response
+            self.response_data.success_signup_response
         )
 
     def test_password_mismatch(self):

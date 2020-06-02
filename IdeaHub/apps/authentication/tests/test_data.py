@@ -5,6 +5,7 @@ VERIFICATION_ENDPOINT = '/authentication/verify'
 LOGIN_ENDPOINT = '/authentication/login'
 LOGOUT_ENDPOINT = '/authentication/logout'
 REFRESH_TOKEN_ENDPOINT = '/authentication/refresh_token'
+CODE_RESEND_ENDPOINT = '/authentication/resend_code'
 
 
 first_name = 'Brian'
@@ -63,7 +64,7 @@ class SignUpData:
             ]
         }
 
-        success_response = {
+        success_signup_response = {
             'message': [
                 ResponseMessages.success_signup_message
             ]

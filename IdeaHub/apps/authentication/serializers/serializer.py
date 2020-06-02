@@ -15,3 +15,7 @@ class SignUpSerializer(LoginSerializer):
 class VerifyUserSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=250)
     verification_code = serializers.CharField(max_length=250)
+
+
+class CodeResendSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=250)
