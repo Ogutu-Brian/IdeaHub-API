@@ -1,33 +1,18 @@
 from rest_framework.response import Response
-from rest_framework.decorators import (
-    api_view,
-    permission_classes
-)
-from django.contrib.auth import (
-    authenticate,
-    login,
-    logout
-)
+from rest_framework.decorators import (api_view, permission_classes)
+from django.contrib.auth import (authenticate, login, logout)
 from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from .serializers.serializer import(
-    SignUpSerializer,
-    VerifyUserSerializer,
-    LoginSerializer
+    SignUpSerializer, VerifyUserSerializer, LoginSerializer
 )
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import vcode
-from ..profile.models import(
-    VerificationCode,
-    Profile
-)
+from ..profile.models import(VerificationCode, Profile)
 from django.core.mail import send_mail
 from .utils.response_messages import ResponseMessages
-from rest_framework_simplejwt.tokens import (
-    RefreshToken,
-    OutstandingToken
-)
+from rest_framework_simplejwt.tokens import (RefreshToken, OutstandingToken)
 from rest_framework.permissions import IsAuthenticated
 import datetime
 

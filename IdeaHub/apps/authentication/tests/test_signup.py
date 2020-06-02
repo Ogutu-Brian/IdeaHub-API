@@ -1,7 +1,4 @@
-from .test_data import (
-    SIGN_UP_ENDPOINT,
-    email
-)
+from .test_data import (SIGN_UP_ENDPOINT, email)
 from rest_framework import status
 from ...profile.models import VerificationCode
 from .base_test import BaseTest

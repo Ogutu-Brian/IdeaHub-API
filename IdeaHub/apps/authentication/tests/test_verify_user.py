@@ -1,9 +1,7 @@
 from rest_framework import status
 from .test_data import (
-    VERIFICATION_ENDPOINT,
-    email,
-    unexisting_email,
-    invalid_code
+    VERIFICATION_ENDPOINT, email,
+    unexisting_email, invalid_code
 )
 from .base_test import BaseTest
 from django.contrib.auth.models import User
