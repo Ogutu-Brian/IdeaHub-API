@@ -7,6 +7,6 @@ urlpatterns = [
     path('verify', views.verify_user),
     path('login', views.login_user),
     path('logout', views.logout_user),
-    path('resend_code', views.reset_verification_code),
+    path('resend_code', views.resend_verification_code),
     path('refresh_token', TokenRefreshView.as_view())
 ]

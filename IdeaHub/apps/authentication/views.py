@@ -191,7 +191,7 @@ def logout_user(request):
 
 
 @api_view(['POST'])
-def reset_verification_code(request):
+def resend_verification_code(request):
     data = request.data
     serializer = CodeResendSerializer(data=data)
     serializer.is_valid(raise_exception=True)
