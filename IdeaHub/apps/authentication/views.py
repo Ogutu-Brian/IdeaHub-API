@@ -170,9 +170,9 @@ def login_user(request):
 def logout_user(request):
     email = request.user
     response = None
-
     user = User.objects.get(email=email)
     outstandingTokens = OutstandingToken.objects.filter(user=user)
+
     if not len(outstandingTokens):
         response = Response({
             'message': [ResponseMessages.invalid_token]
@@ -185,3 +185,8 @@ def logout_user(request):
         }, status=status.HTTP_200_OK)
 
     return response
+
+
+@api_view(['POST'])
+def reset_verification_code(request):
+    pass

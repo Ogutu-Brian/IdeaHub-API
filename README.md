@@ -11,37 +11,44 @@
 # Requirements
 * python 3
 * pipenv
-  - If you're on MacOS, you can install Pipenv easily with Homebrew:
+  - If you're on MacOS, you can install Pipenv easily with Homebrew:  
       `$ brew install pipenv`
-  - Debian Buster+:
-      `$ sudo apt install pipenv`
-  - Fedora:
+  - Debian Buster+:  
+      `$ sudo apt install pipenv`  
+  - Fedora:  
       `$ sudo dnf install pipenv`
-  - FreeBSD:
+  - FreeBSD:  
       `$ pkg install py36-pipenv`
 
 # Setting up the project
-* Clone the repo : `git clone https://github.com/Ogutu-Brian/IdeaHub-API.git`
-* Navigate to the cloned folder `$ cd IdeaHub-API/`
-* Run `$ pipenv shell` . This will create a virtual environment and pipfile for package requirements.
-* Run `$ pipenv install` to install the packages in your environment.
-* $ touch .env
+* Clone the repo :  
+   `$ git clone https://github.com/Ogutu-Brian/IdeaHub-API.git`
+* Navigate to the cloned folder  
+   `$ cd IdeaHub-API/`
+* Run:  
+   `$ pipenv shell`  
+   * This will create a virtual environment and pipfile for package requirements.
+* Run:  
+   `$ pipenv install` to install the packages in your environment.
+* `$ touch .env`
 * copy content of example_env.txt to .env and update the values to your own configs
-* Run migrations `python manage.py migrate`
-* Start the server `python manage.py runserver`
+* Run migrations  
+   `$ python manage.py migrate`
+* Start the server  
+   `$ python manage.py runserver`
 
 
 # Running Unit Tests
  ### Running unit tests with test coverage
- * $ coverage run manage.py test
+ * `$ coverage run manage.py test -v 2`
 
 ### Checking coverage report
 * $ coverage report
   
 ### Checking coverage report from html
-* $ coverage html
-* $ cd htmlcov/
+* `$ coverage html`
+* `$ cd htmlcov/`
 * Launch the index html file
 
 ### Documentation
-https://coverage.readthedocs.io/en/coverage-5.0.3/
+[Postman API documentation](https://documenter.getpostman.com/view/9068409/Szt8fAc2?version=latest)
