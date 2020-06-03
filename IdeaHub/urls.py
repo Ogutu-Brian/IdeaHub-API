@@ -11,7 +11,7 @@ urlpatterns = [
     path('authentication/', include(
         get_app_routes(authentication.APP_NAME)
     )),
-    path('profile', include(
+    path('profile/', include(
         get_app_routes(profile.APP_NAME)
     )),
     path('admin/', admin.site.urls)
