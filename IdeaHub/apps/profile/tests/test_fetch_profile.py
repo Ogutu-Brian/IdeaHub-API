@@ -15,3 +15,17 @@ class TestFetchUserProfile(BaseTest):
             response.data,
             self.response_data.no_credentials_error
         )
+
+    def test_fetch_profile_successfully(self):
+        self.authenticate_user()
+        response = self.fetch_user_profile()
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+
+        self.assertEqual(
+            response.data,
+            self.response_data.fetch_profile
+        )
